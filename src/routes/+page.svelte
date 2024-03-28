@@ -1,2 +1,59 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+
+let inputElement: HTMLElement;
+
+$: if (inputElement) {
+  inputElement.style.setProperty('--_otp-digit', inputElement.selectionStart);
+}
+
+</script>
+
+<h1>Pin Code Input</h1>
+
+
+<label>
+  <span>One Time Code</span>
+  <input type="text" autocomplete="one-time-code" inputmode="numeric" maxlength="6" pattern="\d{6}" bind:this={inputElement}>
+</label>
+
+<style lang="postcss">
+:where([autocomplete=one-time-code]) {
+  --otp-digits: 6;
+  --otp-ls: 2ch;
+  --otp-gap: 1.25;
+
+  /* private consts */
+  --_otp-bgsz: calc(var(--otp-ls) + 1ch);
+  --_otp-digit: 0;
+
+  all: unset;
+  background: 
+  linear-gradient(90deg, 
+    var(--otp-bg, #BBB) calc(var(--otp-gap) * var(--otp-ls)),
+    transparent 0),
+    linear-gradient(90deg, 
+    var(--otp-bg, #EEE) calc(var(--otp-gap) * var(--otp-ls)),
+    transparent 0
+  );
+  background-position: calc(var(--_otp-digit) * var(--_otp-bgsz)) 0, 0 0;
+  background-repeat: no-repeat, repeat-x;
+  background-size: var(--_otp-bgsz) 100%;
+  caret-color: var(--otp-cc, #222);
+  caret-shape: block;
+  clip-path: inset(0% calc(var(--otp-ls) / 2) 0% 0%);
+  font-family: ui-monospace, monospace;
+  font-size: var(--otp-fz, 2.5em);
+  inline-size: calc(var(--otp-digits) * var(--_otp-bgsz));
+  letter-spacing: var(--otp-ls);
+  padding-block: var(--otp-pb, 1ch);
+  padding-inline-start: calc(((var(--otp-ls) - 1ch) / 2) * var(--otp-gap));
+}
+
+/* For this demo */
+label span {
+  display: block;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-weight: 500;
+  margin-block-end: 1ch;
+}
+</style>
